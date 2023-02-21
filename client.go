@@ -15,25 +15,23 @@ const (
 	engine      = "text-davinci-003"
 )
 
-// ChatGPTResponse 返回结构体
-type ChatGPTResponse struct {
+type chatGPTResponse struct {
 	ID      string                 `json:"id"`
 	Object  string                 `json:"object"`
 	Created int                    `json:"created"`
 	Model   string                 `json:"model"`
-	Choices []Choice               `json:"choices"`
+	Choices []choice               `json:"choices"`
 	Usage   map[string]interface{} `json:"usage"`
 }
 
-type Choice struct {
+type choice struct {
 	Text         string `json:"text"`
 	Index        int    `json:"index"`
 	LogProbs     int    `json:"logprobs"`
 	FinishReason string `json:"finish_reason"`
 }
 
-// ChatGPTRequest 请求体
-type ChatGPTRequest struct {
+type chatGPTRequest struct {
 	Model            string  `json:"model"`
 	Prompt           string  `json:"prompt"`
 	MaxTokens        int     `json:"max_tokens"`
@@ -44,7 +42,7 @@ type ChatGPTRequest struct {
 }
 
 func Dialogue(msg, apiKey string) (string, error) {
-	request := ChatGPTRequest{
+	request := chatGPTRequest{
 		Model:            engine,
 		Prompt:           msg,
 		MaxTokens:        maxTokens,
@@ -83,7 +81,7 @@ func Dialogue(msg, apiKey string) (string, error) {
 		return "", err
 	}
 
-	response := &ChatGPTResponse{}
+	response := &chatGPTResponse{}
 	if err := json.Unmarshal(resp.Body(), response); err != nil {
 		return "", err
 	}
